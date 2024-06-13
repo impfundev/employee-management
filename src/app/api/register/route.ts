@@ -1,8 +1,6 @@
 import prisma from "@/services/prisma_client";
 import { NextRequest, NextResponse } from "next/server";
 import * as bcrypt from "bcrypt";
-import { createSessions } from "@/services/session";
-import { signToken } from "@/services/jwt";
 
 export const POST = async (req: NextRequest) => {
   const { name, email, phone, password } = await req.json();
@@ -46,15 +44,31 @@ export const POST = async (req: NextRequest) => {
       },
     });
 
-    // 3. Sign JWT Token
-    const token = signToken(user);
+    // 4. Login
+    const login = await fetch(`${process.env.baseUrl}/api/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
 
-    // 4. Create Session
-    createSessions(token);
-    return NextResponse.json(
-      { message: "Register successfully" },
-      { status: 200 }
-    );
+    if (!login.ok)
+      return NextResponse.json(
+        {
+          message:
+            "User successfully created, but login failed. Please try login later",
+        },
+        { status: 500 }
+      );
+
+    return NextResponse.json({
+      message: "User successfully created",
+      data: user,
+    });
   } catch (error) {
     console.log(error);
     return NextResponse.json(

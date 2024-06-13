@@ -22,3 +22,32 @@ export const GET = async (
     );
   }
 };
+
+export const PUT = async (
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) => {
+  const data = await req.json();
+
+  try {
+    const user = await prisma.user.update({
+      where: {
+        id: Number(params.id),
+      },
+      data,
+    });
+
+    return NextResponse.json(
+      {
+        message: "User updated successfully",
+        data: user,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Failed to update user, please try again later" },
+      { status: 500 }
+    );
+  }
+};
