@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int         @id @default(autoincrement())
+  name          String      @db.VarChar(150)
+  email         String      @unique @db.VarChar(50)
+  phone         String      @unique @db.VarChar(15)
+  password      String      @db.VarChar(150)
+  photo         Bytes?      @db.ByteA
+  createAt      DateTime    @default(now())
+  updateAt      DateTime    @default(now())
+  lastLoginAt   DateTime    @default(now())
+
+  employee      Employee?
+  role          Role        @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  roleId        Int
+}
+
+model Role {
+  id            Int         @id @default(autoincrement())
+  name          Access      @unique
+  createAt      DateTime    @default(now())
+  updateAt      DateTime    @default(now())
+
+  user          User[]
+}
+
+enum Access {
+  SUPER_ADMIN
+  HR_ADMIN
+  EMPLOYEE
+}
+
+model Employee {
+  id            Int         @id @default(autoincrement())
+  code          String      @unique @default(uuid())
+  startsAt      DateTime    @default(now())     
+  endsAt        DateTime? 
+  createAt      DateTime    @default(now())
+  updateAt      DateTime    @default(now())    
+
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId        Int         @unique
+  position      Position    @relation(fields: [positionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  positionId    Int
+  workPlace     WorkPlace    @relation(fields: [workPlaceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  workPlaceId   Int
+}
+
+model Position {
+  id            Int         @id @default(autoincrement())
+  title         String      @unique @db.VarChar(150)
+  description   String?     @db.VarChar(255)
+  employee      Employee[]
+}
+
+model WorkPlace {
+  id            Int         @id @default(autoincrement())
+  place         String      @unique @db.VarChar(150)
+  address       String?     @db.VarChar(255)
+  employee      Employee[]
+}

@@ -1,0 +1,7 @@
+.profile {
+  object-fit: cover;
+  border-radius: 9999px;
+  width: 2rem;
+  height: 2rem;
+  background-color: #3b82f6;
+}
