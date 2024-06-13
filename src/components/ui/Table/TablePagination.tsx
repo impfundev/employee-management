@@ -1,6 +1,6 @@
 "use client";
 
-import { Pagination } from "@/app/lib/types";
+import { Pagination } from "@/lib/types";
 import { queryAtom } from "@/stores/queryAtom";
 import { useAtom } from "jotai";
 

@@ -1,4 +1,4 @@
-import { EmployeeData } from "@/app/lib/types";
+import { EmployeeData } from "@/lib/types";
 import { FormEmployee } from "../Form/FormEmployee";
 import { Modal } from "../Modal";
 

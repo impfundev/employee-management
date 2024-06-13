@@ -1,4 +1,4 @@
-import { TableType } from "@/app/lib/types";
+import { TableType } from "@/lib/types";
 import { TableTools } from "./TableTools";
 import { TableEmployee } from "./TableView/TableEmployee";
 

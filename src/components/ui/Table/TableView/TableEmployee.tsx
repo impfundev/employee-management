@@ -2,11 +2,11 @@
 
 import { TableHead } from "../TableHead";
 import { TableRow } from "../TableRow";
-import { getEmployee } from "@/app/lib/getEmployee";
+import { getEmployee } from "@/lib/getEmployee";
 import { TablePagination } from "../TablePagination";
 import { Modal } from "../../Modal";
 import { Button } from "../../Button";
-import { EmployeeData } from "@/app/lib/types";
+import { EmployeeData } from "@/lib/types";
 
 export const TableEmployee = () => {
   const { employees, isLoading, error } = getEmployee();

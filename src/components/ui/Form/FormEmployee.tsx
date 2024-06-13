@@ -1,4 +1,4 @@
-import { FormEmployeeProps } from "@/app/lib/types";
+import { FormEmployeeProps } from "@/lib/types";
 import { Button } from "../Button";
 import { Input } from "../Input";
 
