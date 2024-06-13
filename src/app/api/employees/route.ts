@@ -1,6 +1,5 @@
 import prisma from "@/services/prisma_client";
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcrypt";
 
 export const GET = async (req: NextRequest) => {
   const searchParams = req.nextUrl.searchParams;
@@ -74,55 +73,6 @@ export const GET = async (req: NextRequest) => {
     console.log(error);
     return NextResponse.json(
       { message: "Failed to fetch employee, please try again later" },
-      { status: 500 }
-    );
-  }
-};
-
-export const POST = async (req: NextRequest) => {
-  const { name, email, phone, password, position, workPlace } =
-    await req.json();
-
-  try {
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        phone,
-        password: bcrypt.hashSync(password, 8),
-        role: {
-          connect: {
-            name: "EMPLOYEE",
-          },
-        },
-        employee: {
-          create: {
-            position: {
-              connect: {
-                title: position,
-              },
-            },
-            workPlace: {
-              connect: {
-                place: workPlace,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    return NextResponse.json(
-      {
-        message: "Employee created successfully",
-        data: user,
-      },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { message: "Failed to create employee, please try again later" },
       { status: 500 }
     );
   }
